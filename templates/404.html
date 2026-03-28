@@ -1,1 +1,268 @@
+{% extends "base.html" %}
 
+{% block title %}Page Not Found | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-container {
+        min-height: calc(100vh - 400px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 20px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    }
+
+    .error-content {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .error-code {
+        font-size: 8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        line-height: 1;
+    }
+
+    .error-icon {
+        font-size: 5rem;
+        color: #e74c3c;
+        margin-bottom: 1rem;
+    }
+
+    .error-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .error-message {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .error-btn {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .error-btn-primary {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+
+    .error-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .error-btn-secondary {
+        background: white;
+        color: #e74c3c;
+        border: 2px solid #e74c3c;
+    }
+
+    .error-btn-secondary:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .search-box {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0.5rem;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: 2px solid #dee2e6;
+        border-radius: 50px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    .search-btn {
+        padding: 0.8rem 1.5rem;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+    }
+
+    .suggestions {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .suggestions ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .suggestions li {
+        margin: 0;
+    }
+
+    .suggestions a {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .suggestions a:hover {
+        color: #e74c3c;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .error-code {
+            font-size: 5rem;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+        }
+
+        .error-message {
+            font-size: 1rem;
+        }
+
+        .error-actions {
+            flex-direction: column;
+        }
+
+        .search-form {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content">
+        <div class="error-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-message">
+            Oops! The page you're looking for doesn't exist or has been moved.<br>
+            Let's get you back on track.
+        </p>
+
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="error-btn error-btn-primary">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="{{ url_for('donate') }}" class="error-btn error-btn-secondary">
+                <i class="fas fa-heart"></i> Make a Donation
+            </a>
+        </div>
+
+        <div class="search-box">
+            <form class="search-form" onsubmit="handleSearch(event)">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search our website..." autocomplete="off">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <div class="suggestions">
+            <p>You might be looking for:</p>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('programs') }}">Our Programs</a></li>
+                <li><a href="{{ url_for('get_involved') }}">Get Involved</a></li>
+                <li><a href="{{ url_for('donate') }}">Donate</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function handleSearch(event) {
+        event.preventDefault();
+        const searchTerm = document.getElementById('searchInput').value.trim();
+        if (searchTerm) {
+            // You can implement actual search functionality here
+            // For now, redirect to a search results page or show a message
+            alert(`Search for "${searchTerm}" - Search functionality coming soon!`);
+        }
+        return false;
+    }
+
+    // Add keyboard shortcut for search
+    document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && !e.target.matches('input, textarea')) {
+            e.preventDefault();
+            document.getElementById('searchInput').focus();
+        }
+    });
+</script>
+{% endblock %}
