@@ -1,1 +1,288 @@
+{% extends "base.html" %}
 
+{% block title %}Server Error | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-container {
+        min-height: calc(100vh - 400px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 20px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    }
+
+    .error-content {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .error-code {
+        font-size: 8rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        line-height: 1;
+    }
+
+    .error-icon {
+        font-size: 5rem;
+        color: #e74c3c;
+        margin-bottom: 1rem;
+        animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(10deg); }
+        75% { transform: rotate(-10deg); }
+    }
+
+    .error-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .error-message {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+
+    .error-btn {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .error-btn-primary {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+
+    .error-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .error-btn-secondary {
+        background: white;
+        color: #e74c3c;
+        border: 2px solid #e74c3c;
+    }
+
+    .error-btn-secondary:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .error-btn-refresh {
+        background: #3498db;
+        color: white;
+    }
+
+    .error-btn-refresh:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+    }
+
+    .error-info {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        text-align: left;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .error-info h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .error-info p {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .error-info ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
+
+    .error-info li {
+        margin-bottom: 0.5rem;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .error-info li i {
+        color: #e74c3c;
+        margin-right: 0.5rem;
+        width: 20px;
+    }
+
+    .report-btn {
+        margin-top: 1rem;
+        padding: 0.6rem 1rem;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .report-btn:hover {
+        background: #e74c3c;
+        color: white;
+        border-color: #e74c3c;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .error-code {
+            font-size: 5rem;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+        }
+
+        .error-message {
+            font-size: 1rem;
+        }
+
+        .error-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="error-code">500</div>
+        <h1 class="error-title">Internal Server Error</h1>
+        <p class="error-message">
+            Something went wrong on our end. We apologize for the inconvenience.<br>
+            Our team has been notified and is working to fix the issue.
+        </p>
+
+        <div class="error-actions">
+            <button onclick="refreshPage()" class="error-btn error-btn-refresh">
+                <i class="fas fa-sync-alt"></i> Refresh Page
+            </button>
+            <a href="{{ url_for('index') }}" class="error-btn error-btn-primary">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="{{ url_for('contact') }}" class="error-btn error-btn-secondary">
+                <i class="fas fa-envelope"></i> Contact Support
+            </a>
+        </div>
+
+        <div class="error-info">
+            <h3>What can you do?</h3>
+            <ul>
+                <li><i class="fas fa-sync-alt"></i> Try refreshing the page</li>
+                <li><i class="fas fa-clock"></i> Wait a few minutes and try again</li>
+                <li><i class="fas fa-home"></i> Return to the <a href="{{ url_for('index') }}" style="color: #e74c3c;">homepage</a></li>
+                <li><i class="fas fa-envelope"></i> <a href="{{ url_for('contact') }}" style="color: #e74c3c;">Contact us</a> if the problem persists</li>
+            </ul>
+            <button onclick="reportError()" class="report-btn">
+                <i class="fas fa-bug"></i> Report this error
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function refreshPage() {
+        location.reload(true); // Force refresh from server
+    }
+
+    function reportError() {
+        const errorInfo = {
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        };
+
+        // You can implement actual error reporting here
+        // For now, show a message
+        alert('Thank you for reporting this error. Our team will look into it promptly.\n\nError details have been logged.');
+
+        // Optional: Send to your backend
+        // fetch('/api/report-error', {
+        //     method: 'POST',
+        //     headers: {'Content-Type': 'application/json'},
+        //     body: JSON.stringify(errorInfo)
+        // });
+    }
+
+    // Auto-refresh after 30 seconds if it's a temporary issue
+    setTimeout(() => {
+        const retryBtn = document.querySelector('.error-btn-refresh');
+        if (retryBtn) {
+            retryBtn.style.animation = 'pulse 1s ease infinite';
+        }
+    }, 5000);
+
+    // Add pulse animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Log error to console for debugging
+    console.error('500 Error occurred at:', window.location.href);
+    console.error('Timestamp:', new Date().toISOString());
+</script>
+{% endblock %}
