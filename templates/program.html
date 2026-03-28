@@ -1,1 +1,496 @@
 
+{% extends "base.html" %}
+
+{% block title %}Our Programs | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Programs Hero */
+    .programs-hero {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        color: white;
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .programs-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+        background-size: 50px 50px;
+        animation: moveBackground 20s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        from {
+            transform: translate(0, 0);
+        }
+        to {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    .programs-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .programs-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    /* Programs List */
+    .programs-list {
+        padding: 4rem 2rem;
+        background: #f9f9f9;
+    }
+
+    .program-item {
+        max-width: 1200px;
+        margin: 0 auto 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .program-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .program-item.reverse {
+        direction: rtl;
+    }
+
+    .program-item.reverse .program-content {
+        direction: ltr;
+    }
+
+    .program-image {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        padding: 3rem;
+        text-align: center;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .program-image::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+        background-size: 30px 30px;
+        animation: moveBackground 15s linear infinite;
+    }
+
+    .program-image i {
+        font-size: 6rem;
+        color: white;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+
+    .program-item:hover .program-image i {
+        transform: scale(1.1);
+    }
+
+    .program-content {
+        padding: 2.5rem;
+    }
+
+    .program-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+
+    .program-content p {
+        margin-bottom: 1.5rem;
+        color: #7f8c8d;
+        line-height: 1.8;
+    }
+
+    .program-stats {
+        display: flex;
+        gap: 2rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+    }
+
+    .program-stats div {
+        text-align: center;
+        flex: 1;
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .program-stats div:hover {
+        background: #e74c3c;
+        transform: translateY(-3px);
+    }
+
+    .program-stats div:hover h4,
+    .program-stats div:hover p {
+        color: white;
+    }
+
+    .program-stats h4 {
+        font-size: 1.8rem;
+        color: #e74c3c;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .program-stats p {
+        margin-bottom: 0;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+
+    .program-btn {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .program-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .cta-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .cta-content p {
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .cta-btn-primary {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .cta-btn-primary:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+    }
+
+    .cta-btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .cta-btn-secondary:hover {
+        background: white;
+        color: #2c3e50;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .programs-hero h1 {
+            font-size: 2rem;
+        }
+
+        .programs-hero p {
+            font-size: 1rem;
+        }
+
+        .program-item {
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin-bottom: 2rem;
+        }
+
+        .program-image {
+            padding: 2rem;
+        }
+
+        .program-image i {
+            font-size: 4rem;
+        }
+
+        .program-content {
+            padding: 1.5rem;
+        }
+
+        .program-content h2 {
+            font-size: 1.5rem;
+        }
+
+        .program-stats {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .program-stats div {
+            padding: 0.8rem;
+        }
+
+        .program-stats h4 {
+            font-size: 1.5rem;
+        }
+
+        .cta-content h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* Tablet Styles */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .program-item {
+            gap: 2rem;
+        }
+
+        .program-content {
+            padding: 2rem;
+        }
+
+        .program-stats {
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Programs Hero Section -->
+<section class="programs-hero">
+    <h1>Our Programs</h1>
+    <p>Discover how we're making a difference in communities worldwide</p>
+</section>
+
+<!-- Programs List -->
+<section class="programs-list">
+    <!-- Education Program -->
+    <div class="program-item">
+        <div class="program-image">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="program-content">
+            <h2>Education for All</h2>
+            <p>We believe every child deserves access to quality education. Our program builds schools, provides learning materials, and trains teachers in underserved communities. Through scholarships and after-school programs, we ensure no child is left behind.</p>
+            <div class="program-stats">
+                <div>
+                    <h4>25+</h4>
+                    <p>Schools Built</p>
+                </div>
+                <div>
+                    <h4>5,000+</h4>
+                    <p>Students Enrolled</p>
+                </div>
+                <div>
+                    <h4>100+</h4>
+                    <p>Teachers Trained</p>
+                </div>
+            </div>
+            <a href="{{ url_for('get_involved') }}" class="program-btn">Support This Program →</a>
+        </div>
+    </div>
+
+    <!-- Healthcare Program -->
+    <div class="program-item reverse">
+        <div class="program-image">
+            <i class="fas fa-heartbeat"></i>
+        </div>
+        <div class="program-content">
+            <h2>Healthcare Access</h2>
+            <p>Mobile clinics bring essential healthcare services to remote communities. We provide free check-ups, medicines, health education, and preventive care. Our goal is to ensure everyone has access to quality healthcare regardless of their location or economic status.</p>
+            <div class="program-stats">
+                <div>
+                    <h4>10+</h4>
+                    <p>Mobile Clinics</p>
+                </div>
+                <div>
+                    <h4>15,000+</h4>
+                    <p>Patients Served</p>
+                </div>
+                <div>
+                    <h4>50+</h4>
+                    <p>Communities Reached</p>
+                </div>
+            </div>
+            <a href="{{ url_for('get_involved') }}" class="program-btn">Support This Program →</a>
+        </div>
+    </div>
+
+    <!-- Clean Water Program -->
+    <div class="program-item">
+        <div class="program-image">
+            <i class="fas fa-hand-holding-water"></i>
+        </div>
+        <div class="program-content">
+            <h2>Clean Water Initiative</h2>
+            <p>Access to clean water is a basic human right. We install wells, water purification systems, and educate communities on water hygiene and sanitation. Clean water reduces disease, improves health, and gives communities hope for a better future.</p>
+            <div class="program-stats">
+                <div>
+                    <h4>50+</h4>
+                    <p>Wells Drilled</p>
+                </div>
+                <div>
+                    <h4>20,000+</h4>
+                    <p>People with Clean Water</p>
+                </div>
+                <div>
+                    <h4>30+</h4>
+                    <p>Communities Served</p>
+                </div>
+            </div>
+            <a href="{{ url_for('get_involved') }}" class="program-btn">Support This Program →</a>
+        </div>
+    </div>
+
+    <!-- Food Security Program -->
+    <div class="program-item reverse">
+        <div class="program-image">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <div class="program-content">
+            <h2>Food Security Program</h2>
+            <p>We work to combat hunger by providing nutritious meals, supporting local farmers, and teaching sustainable farming practices. Our program ensures families have access to healthy food and the knowledge to grow their own.</p>
+            <div class="program-stats">
+                <div>
+                    <h4>100,000+</h4>
+                    <p>Meals Provided</p>
+                </div>
+                <div>
+                    <h4>500+</h4>
+                    <p>Farmers Supported</p>
+                </div>
+                <div>
+                    <h4>20+</h4>
+                    <p>Communities Served</p>
+                </div>
+            </div>
+            <a href="{{ url_for('get_involved') }}" class="program-btn">Support This Program →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Your support can help us expand these programs and reach more communities in need. Join us in creating lasting change.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('donate') }}" class="cta-btn cta-btn-primary">Donate Now</a>
+            <a href="{{ url_for('get_involved') }}" class="cta-btn cta-btn-secondary">Become a Volunteer</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add scroll animation for program items
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all program items
+    document.querySelectorAll('.program-item').forEach(item => {
+        item.style.opacity = '0';
+        observer.observe(item);
+    });
+
+    // Add hover effect for stats
+    const stats = document.querySelectorAll('.program-stats div');
+    stats.forEach(stat => {
+        stat.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        stat.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+</script>
+{% endblock %}
