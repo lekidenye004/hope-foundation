@@ -1,1 +1,13 @@
 
+{% extends "base.html" %}
+
+{% block title %}Donation Successful{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 100px 20px;">
+    <h1>Thank You!</h1>
+    <p>Your donation of KES {{ "%.2f"|format(donation.amount) }} was successful.</p>
+    <p>Transaction ID: {{ donation.transaction_id }}</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+</div>
+{% endblock %}
