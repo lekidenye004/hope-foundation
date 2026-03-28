@@ -1,1 +1,611 @@
 
+{% extends "base.html" %}
+
+{% block title %}Contact Us | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero */
+    .contact-hero {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        color: white;
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+        background-size: 50px 50px;
+        animation: moveBackground 20s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        from {
+            transform: translate(0, 0);
+        }
+        to {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    .contact-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .contact-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    /* Contact Content */
+    .contact-content {
+        padding: 4rem 2rem;
+        background: #f9f9f9;
+    }
+
+    .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+
+    /* Contact Info Cards */
+    .contact-info {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-info:hover {
+        transform: translateY(-5px);
+    }
+
+    .contact-info h2 {
+        margin-bottom: 2rem;
+        color: #2c3e50;
+        font-size: 1.8rem;
+        position: relative;
+    }
+
+    .contact-info h2::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        margin-top: 0.5rem;
+        border-radius: 3px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: #f8f9fa;
+        transform: translateX(5px);
+    }
+
+    .info-item i {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .info-item h3 {
+        margin-bottom: 0.3rem;
+        font-size: 1.1rem;
+        color: #2c3e50;
+    }
+
+    .info-item p {
+        color: #7f8c8d;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .info-item a {
+        color: #7f8c8d;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .info-item a:hover {
+        color: #e74c3c;
+    }
+
+    /* Map */
+    .map {
+        margin-top: 2rem;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .map iframe {
+        width: 100%;
+        height: 250px;
+        border: none;
+    }
+
+    /* Contact Form */
+    .contact-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-form:hover {
+        transform: translateY(-5px);
+    }
+
+    .contact-form h2 {
+        margin-bottom: 2rem;
+        color: #2c3e50;
+        font-size: 1.8rem;
+        position: relative;
+    }
+
+    .contact-form h2::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        margin-top: 0.5rem;
+        border-radius: 3px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .form-group label .required {
+        color: #e74c3c;
+        margin-left: 3px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Social Media Section */
+    .social-section {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .social-icon {
+        display: inline-flex;
+        width: 45px;
+        height: 45px;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+        border-radius: 50%;
+        color: #e74c3c;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        padding: 4rem 2rem;
+        background: white;
+    }
+
+    .faq-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .faq-item {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .faq-item h3 {
+        color: #e74c3c;
+        margin-bottom: 0.8rem;
+        font-size: 1.1rem;
+    }
+
+    .faq-item p {
+        color: #7f8c8d;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .contact-hero h1 {
+            font-size: 2rem;
+        }
+
+        .contact-hero p {
+            font-size: 1rem;
+        }
+
+        .contact-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .contact-info, .contact-form {
+            padding: 1.5rem;
+        }
+
+        .info-item {
+            padding: 0.5rem;
+        }
+
+        .faq-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Contact Hero Section -->
+<section class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>We'd love to hear from you. Reach out with any questions or inquiries.</p>
+</section>
+
+<section class="contact-content">
+    <div class="contact-container">
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <h3>Address</h3>
+                    <p>123 Hope Street, Nairobi, Kenya</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <h3>Phone</h3>
+                    <p><a href="tel:+254700057910">0700 057 910</a></p>
+                    <p><a href="tel:+254711789012">+254 711 789012</a></p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <h3>Email</h3>
+                    <p><a href="mailto:josephkidenye@gmail.com">josephkidenye@gmail.com</a></p>
+                    <p><a href="mailto:volunteer@hopefoundation.org">volunteer@hopefoundation.org</a></p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-clock"></i>
+                <div>
+                    <h3>Office Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                    <p>Saturday: 10:00 AM - 2:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+
+            <div class="map">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.803624184562!2d36.82194731475388!3d-1.2864400990710867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d4f5a3b0b1%3A0x8a5b5b5b5b5b5b5b!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2s!4v1641234567890!5m2!1sen!2s"
+                    width="100%"
+                    height="250"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2>Send us a Message</h2>
+            <form method="POST" action="{{ url_for('contact') }}" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="How can we help you?">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message <span class="required">*</span></label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Write your message here..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+
+            <div class="social-section">
+                <p style="color: #7f8c8d;">Or connect with us on social media</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">Frequently Asked Questions</h2>
+    <div class="faq-grid">
+        <div class="faq-item">
+            <h3>How can I donate?</h3>
+            <p>You can donate online through our secure donation page. We accept all major credit cards and PayPal.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How can I volunteer?</h3>
+            <p>Visit our Get Involved page to fill out a volunteer application form. We'd love to have you join our team!</p>
+        </div>
+        <div class="faq-item">
+            <h3>Where does my donation go?</h3>
+            <p>100% of your donation goes directly to our programs. We maintain transparency in all our operations.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How can I partner with you?</h3>
+            <p>Please contact us via email at josephkidenye@gmail.com for partnership inquiries.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation and submission
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let hasError = false;
+            let errorMessage = '';
+
+            if (!name) {
+                errorMessage = 'Please enter your name';
+                hasError = true;
+                document.getElementById('name').style.borderColor = '#e74c3c';
+            } else if (name.length < 2) {
+                errorMessage = 'Name must be at least 2 characters';
+                hasError = true;
+                document.getElementById('name').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('name').style.borderColor = '#e0e0e0';
+            }
+
+            if (!email) {
+                errorMessage = errorMessage || 'Please enter your email';
+                hasError = true;
+                document.getElementById('email').style.borderColor = '#e74c3c';
+            } else if (!emailRegex.test(email)) {
+                errorMessage = errorMessage || 'Please enter a valid email address';
+                hasError = true;
+                document.getElementById('email').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('email').style.borderColor = '#e0e0e0';
+            }
+
+            if (!message) {
+                errorMessage = errorMessage || 'Please enter your message';
+                hasError = true;
+                document.getElementById('message').style.borderColor = '#e74c3c';
+            } else if (message.length < 10) {
+                errorMessage = errorMessage || 'Message must be at least 10 characters';
+                hasError = true;
+                document.getElementById('message').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('message').style.borderColor = '#e0e0e0';
+            }
+
+            if (hasError) {
+                e.preventDefault();
+                showFlashMessage(errorMessage, 'error');
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+            }
+        });
+
+        // Real-time validation
+        const inputs = ['name', 'email', 'message'];
+        inputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function() {
+                    if (this.value.trim().length > 0) {
+                        this.style.borderColor = '#28a745';
+                    } else {
+                        this.style.borderColor = '#e0e0e0';
+                    }
+                });
+            }
+        });
+    }
+
+    // Function to show flash messages
+    function showFlashMessage(message, type) {
+        const flashContainer = document.getElementById('flashMessages');
+        if (!flashContainer) return;
+
+        const flashDiv = document.createElement('div');
+        flashDiv.className = `alert alert-${type}`;
+        flashDiv.innerHTML = `
+            ${message}
+            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+        `;
+        flashContainer.appendChild(flashDiv);
+
+        setTimeout(() => {
+            if (flashDiv) {
+                flashDiv.style.opacity = '0';
+                setTimeout(() => {
+                    if (flashDiv && flashDiv.remove) flashDiv.remove();
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    // Add animation for FAQ items
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.style.opacity = '0';
+        observer.observe(item);
+    });
+</script>
+{% endblock %}
