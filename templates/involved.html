@@ -1,1 +1,602 @@
 
+{% extends "base.html" %}
+
+{% block title %}Get Involved | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero */
+    .involved-hero {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        color: white;
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .involved-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+        background-size: 50px 50px;
+        animation: moveBackground 20s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        from {
+            transform: translate(0, 0);
+        }
+        to {
+            transform: translate(50px, 50px);
+        }
+    }
+
+    .involved-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .involved-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    /* Ways to Help Section */
+    .ways-section {
+        padding: 4rem 2rem;
+        background: #f9f9f9;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+        color: #2c3e50;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        margin: 1rem auto 0;
+        border-radius: 3px;
+    }
+
+    .ways-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .way-card {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .way-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(231, 76, 60, 0.2);
+    }
+
+    .way-card i {
+        font-size: 3.5rem;
+        color: #e74c3c;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .way-card:hover i {
+        transform: scale(1.1);
+    }
+
+    .way-card h3 {
+        margin-bottom: 1rem;
+        color: #2c3e50;
+        font-size: 1.5rem;
+    }
+
+    .way-card p {
+        color: #7f8c8d;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .way-btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .donate-way-btn {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+    }
+
+    .donate-way-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .volunteer-way-btn {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+
+    .partner-way-btn {
+        background: linear-gradient(135deg, #27ae60, #229954);
+        color: white;
+    }
+
+    /* Volunteer Form Section */
+    .volunteer-section {
+        padding: 4rem 2rem;
+        background: #ecf0f1;
+    }
+
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+        transform: translateY(-5px);
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+        font-size: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .form-group label .required {
+        color: #e74c3c;
+        margin-left: 3px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    .form-group select {
+        cursor: pointer;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Impact Numbers Section */
+    .impact-numbers {
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+    }
+
+    .numbers-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .number-item {
+        padding: 1.5rem;
+    }
+
+    .number-item h3 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #e74c3c;
+    }
+
+    .number-item p {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .involved-hero h1 {
+            font-size: 2rem;
+        }
+
+        .involved-hero p {
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .ways-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-container {
+            padding: 1.5rem;
+        }
+
+        .numbers-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .number-item h3 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="involved-hero">
+    <h1>Join Our Mission</h1>
+    <p>Your time, skills, and support can make a real difference</p>
+</section>
+
+<!-- Ways to Help Section -->
+<section class="ways-section">
+    <h2 class="section-title">Ways to Get Involved</h2>
+    <div class="ways-grid">
+        <div class="way-card">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h3>Donate</h3>
+            <p>Your financial support helps us reach more communities and expand our programs. Every contribution makes a difference.</p>
+            <a href="{{ url_for('donate') }}" class="way-btn donate-way-btn">Donate Now →</a>
+        </div>
+        <div class="way-card">
+            <i class="fas fa-users"></i>
+            <h3>Volunteer</h3>
+            <p>Share your skills and time to make a direct impact in communities. Join our team of dedicated volunteers.</p>
+            <a href="#volunteer-form" class="way-btn volunteer-way-btn">Apply to Volunteer →</a>
+        </div>
+        <div class="way-card">
+            <i class="fas fa-handshake"></i>
+            <h3>Partner With Us</h3>
+            <p>Organizations can partner with us to create sustainable change together. Let's collaborate for impact.</p>
+            <a href="{{ url_for('contact') }}" class="way-btn partner-way-btn">Partner Now →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Numbers -->
+<section class="impact-numbers">
+    <div class="numbers-grid">
+        <div class="number-item">
+            <h3 id="volunteerCount">500+</h3>
+            <p>Active Volunteers</p>
+        </div>
+        <div class="number-item">
+            <h3 id="hoursCount">25,000+</h3>
+            <p>Volunteer Hours</p>
+        </div>
+        <div class="number-item">
+            <h3 id="countriesCount">15+</h3>
+            <p>Countries</p>
+        </div>
+        <div class="number-item">
+            <h3 id="impactCount">100,000+</h3>
+            <p>Lives Impacted</p>
+        </div>
+    </div>
+</section>
+
+<!-- Volunteer Application Form -->
+<section class="volunteer-section" id="volunteer-form">
+    <div class="form-container">
+        <h2>Volunteer Application</h2>
+        <form method="POST" action="{{ url_for('get_involved') }}" id="volunteerForm">
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="volunteer_type">How would you like to help? <span class="required">*</span></label>
+                <select id="volunteer_type" name="volunteer_type" required>
+                    <option value="">Select an option</option>
+                    <option value="education">Education & Teaching</option>
+                    <option value="healthcare">Healthcare Support</option>
+                    <option value="fundraising">Fundraising & Events</option>
+                    <option value="administration">Administration & Office</option>
+                    <option value="field_work">Field Work & Community Outreach</option>
+                    <option value="social_media">Social Media & Marketing</option>
+                    <option value="technical">Technical Support (IT, Web)</option>
+                    <option value="other">Other Skills</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Why do you want to volunteer?</label>
+                <textarea id="message" name="message" rows="4" placeholder="Tell us about your motivation and skills..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> Submit Application
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Smooth scroll to form when clicking volunteer link
+    document.querySelectorAll('a[href="#volunteer-form"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.getElementById('volunteer-form');
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Form validation and submission
+    const volunteerForm = document.getElementById('volunteerForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (volunteerForm) {
+        volunteerForm.addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const volunteerType = document.getElementById('volunteer_type').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let hasError = false;
+            let errorMessage = '';
+
+            // Validate name
+            if (!name) {
+                errorMessage = 'Please enter your name';
+                hasError = true;
+                document.getElementById('name').style.borderColor = '#e74c3c';
+            } else if (name.length < 2) {
+                errorMessage = 'Name must be at least 2 characters';
+                hasError = true;
+                document.getElementById('name').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('name').style.borderColor = '#e0e0e0';
+            }
+
+            // Validate email
+            if (!email) {
+                errorMessage = errorMessage || 'Please enter your email';
+                hasError = true;
+                document.getElementById('email').style.borderColor = '#e74c3c';
+            } else if (!emailRegex.test(email)) {
+                errorMessage = errorMessage || 'Please enter a valid email address';
+                hasError = true;
+                document.getElementById('email').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('email').style.borderColor = '#e0e0e0';
+            }
+
+            // Validate volunteer type
+            if (!volunteerType) {
+                errorMessage = errorMessage || 'Please select how you would like to help';
+                hasError = true;
+                document.getElementById('volunteer_type').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('volunteer_type').style.borderColor = '#e0e0e0';
+            }
+
+            if (hasError) {
+                e.preventDefault();
+                showFlashMessage(errorMessage, 'error');
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.disabled = true;
+            }
+        });
+
+        // Real-time validation
+        const inputs = ['name', 'email', 'volunteer_type'];
+        inputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function() {
+                    if (this.value.trim().length > 0) {
+                        this.style.borderColor = '#28a745';
+                    } else {
+                        this.style.borderColor = '#e0e0e0';
+                    }
+                });
+            }
+        });
+    }
+
+    // Function to show flash messages
+    function showFlashMessage(message, type) {
+        const flashContainer = document.getElementById('flashMessages');
+        if (!flashContainer) return;
+
+        const flashDiv = document.createElement('div');
+        flashDiv.className = `alert alert-${type}`;
+        flashDiv.innerHTML = `
+            ${message}
+            <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+        `;
+        flashContainer.appendChild(flashDiv);
+
+        setTimeout(() => {
+            if (flashDiv) {
+                flashDiv.style.opacity = '0';
+                setTimeout(() => {
+                    if (flashDiv && flashDiv.remove) flashDiv.remove();
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    // Animate numbers on scroll
+    function animateNumbers() {
+        const numbers = [
+            { element: 'volunteerCount', target: 500 },
+            { element: 'hoursCount', target: 25000 },
+            { element: 'countriesCount', target: 15 },
+            { element: 'impactCount', target: 100000 }
+        ];
+
+        numbers.forEach(num => {
+            const element = document.getElementById(num.element);
+            if (element) {
+                let current = 0;
+                const increment = num.target / 50;
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= num.target) {
+                        current = num.target;
+                        clearInterval(interval);
+                    }
+                    if (num.target >= 1000) {
+                        element.textContent = Math.floor(current).toLocaleString() + '+';
+                    } else {
+                        element.textContent = Math.floor(current) + '+';
+                    }
+                }, 40);
+            }
+        });
+    }
+
+    // Trigger animation when numbers section is in view
+    const observerOptions = {
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateNumbers();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const impactSection = document.querySelector('.impact-numbers');
+    if (impactSection) {
+        observer.observe(impactSection);
+    }
+
+    // Add animation for way cards
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                cardObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.way-card').forEach(card => {
+        card.style.opacity = '0';
+        cardObserver.observe(card);
+    });
+</script>
+{% endblock %}
