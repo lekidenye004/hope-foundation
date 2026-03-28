@@ -1,1 +1,654 @@
+{% extends "base.html" %}
 
+{% block title %}Donate | Hope Foundation{% endblock %}
+
+{% block extra_css %}
+<style>
+    .donate-hero {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        color: white;
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .donate-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+        background-size: 50px 50px;
+        animation: moveBackground 20s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        from { transform: translate(0, 0); }
+        to { transform: translate(50px, 50px); }
+    }
+
+    .donate-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .donate-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .donation-section {
+        padding: 4rem 2rem;
+        background: #f9f9f9;
+    }
+
+    .donation-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .donation-container h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+    }
+
+    /* Amount Buttons */
+    .amount-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+
+    .amount-btn {
+        padding: 1rem;
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        color: #2c3e50;
+    }
+
+    .amount-btn:hover {
+        background: #e74c3c;
+        color: white;
+        border-color: #e74c3c;
+        transform: translateY(-2px);
+    }
+
+    .amount-btn.active {
+        background: #e74c3c;
+        color: white;
+        border-color: #e74c3c;
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    /* Custom Amount */
+    .custom-amount {
+        margin: 1.5rem 0;
+    }
+
+    .custom-amount label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .custom-amount input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .custom-amount input:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    /* Form Groups */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .form-group label .required {
+        color: #e74c3c;
+        margin-left: 3px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    /* Payment Methods */
+    .payment-methods {
+        margin: 1.5rem 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .payment-method {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 1.2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .payment-method:hover {
+        border-color: #e74c3c;
+        transform: translateY(-2px);
+    }
+
+    .payment-method.active {
+        border-color: #e74c3c;
+        background: linear-gradient(135deg, #fff5f5, #fff);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.1);
+    }
+
+    .payment-method i {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .payment-method h4 {
+        margin: 0.5rem 0;
+        color: #2c3e50;
+    }
+
+    .payment-method p {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+    .mpesa-badge {
+        background: #4caf50;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        display: inline-block;
+        margin-top: 0.5rem;
+    }
+
+    .paypal-badge {
+        background: #003087;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        display: inline-block;
+        margin-top: 0.5rem;
+    }
+
+    /* Phone Field */
+    .phone-field {
+        display: none;
+    }
+
+    .phone-field.show {
+        display: block;
+        animation: fadeInUp 0.3s ease;
+    }
+
+    .phone-format {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        margin-top: 0.3rem;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    /* Alert Messages */
+    .alert {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+
+    .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
+
+    .alert-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border-left: 4px solid #17a2b8;
+    }
+
+    /* Secure Badge */
+    .secure-badge {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+    }
+
+    .secure-badge i {
+        color: #28a745;
+        margin-right: 0.5rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .donate-hero h1 {
+            font-size: 2rem;
+        }
+
+        .donate-hero p {
+            font-size: 1rem;
+        }
+
+        .donation-container {
+            padding: 1.5rem;
+        }
+
+        .amount-buttons {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .payment-methods {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="donate-hero">
+    <h1>Make a Donation</h1>
+    <p>Your generosity helps us transform lives and communities</p>
+</section>
+
+<section class="donation-section">
+    <div class="donation-container">
+        <h2>Choose an Amount</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'error' %}exclamation-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('donate') }}" id="donationForm">
+            <!-- Amount Buttons -->
+            <div class="amount-buttons">
+                <button type="button" class="amount-btn" data-amount="10">KES 10</button>
+                <button type="button" class="amount-btn" data-amount="50">KES 50</button>
+                <button type="button" class="amount-btn" data-amount="100">KES 100</button>
+                <button type="button" class="amount-btn" data-amount="500">KES 500</button>
+                <button type="button" class="amount-btn" data-amount="1000">KES 1,000</button>
+                <button type="button" class="amount-btn" data-amount="5000">KES 5,000</button>
+            </div>
+
+            <!-- Custom Amount -->
+            <div class="custom-amount">
+                <label for="custom_amount">Custom Amount (KES)</label>
+                <input type="number" id="custom_amount" name="amount" step="1" min="1" placeholder="Enter amount in Kenyan Shillings" required>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <div class="payment-method active" data-method="mpesa">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>M-Pesa</h4>
+                    <p>Pay with M-Pesa</p>
+                    <div class="mpesa-badge">Popular in Kenya</div>
+                </div>
+                <div class="payment-method" data-method="paypal">
+                    <i class="fab fa-paypal"></i>
+                    <h4>PayPal</h4>
+                    <p>Pay with PayPal/Card</p>
+                    <div class="paypal-badge">International</div>
+                </div>
+            </div>
+
+            <!-- M-Pesa Phone Field -->
+            <div class="phone-field show" id="phoneField">
+                <div class="form-group">
+                    <label for="phone">M-Pesa Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="e.g., 0712345678 or 254712345678">
+                    <div class="phone-format">
+                        <i class="fas fa-info-circle"></i> Enter the phone number registered with M-Pesa
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donation Type -->
+            <div class="form-group">
+                <label for="donation_type">Donation Type</label>
+                <select id="donation_type" name="donation_type">
+                    <option value="one-time">💝 One-time Donation</option>
+                    <option value="monthly">🔄 Monthly Donation</option>
+                    <option value="yearly">📅 Yearly Donation</option>
+                </select>
+            </div>
+
+            <!-- Message -->
+            <div class="form-group">
+                <label for="message">Message (Optional)</label>
+                <textarea id="message" name="message" rows="3" placeholder="Leave a message with your donation..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-heart"></i> Donate Now
+            </button>
+        </form>
+
+        <!-- Secure Badge -->
+        <div class="secure-badge">
+            <i class="fas fa-lock"></i> Secure payment processing
+            <br>
+            <i class="fas fa-mobile-alt"></i> M-Pesa: You'll receive a prompt on your phone
+            <br>
+            <i class="fab fa-paypal"></i> PayPal: You'll be redirected to complete payment
+        </div>
+    </div>
+</section>
+
+<script>
+    // Payment method switching
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const phoneField = document.getElementById('phoneField');
+    const phoneInput = document.getElementById('phone');
+    const form = document.getElementById('donationForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Payment method click handler
+    paymentMethods.forEach(method => {
+        method.addEventListener('click', () => {
+            // Remove active class from all
+            paymentMethods.forEach(m => m.classList.remove('active'));
+            // Add active class to clicked
+            method.classList.add('active');
+
+            const methodType = method.dataset.method;
+
+            // Show/hide phone field based on payment method
+            if (methodType === 'mpesa') {
+                phoneField.classList.add('show');
+                phoneInput.required = true;
+            } else {
+                phoneField.classList.remove('show');
+                phoneInput.required = false;
+            }
+        });
+    });
+
+    // Form submission handler
+    form.addEventListener('submit', function(e) {
+        // Get amount
+        const amount = document.getElementById('custom_amount').value;
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const activeMethod = document.querySelector('.payment-method.active');
+        const methodType = activeMethod.dataset.method;
+
+        // Validate amount
+        if (!amount || parseFloat(amount) <= 0) {
+            e.preventDefault();
+            alert('Please enter a valid donation amount');
+            document.getElementById('custom_amount').focus();
+            return false;
+        }
+
+        // Validate name
+        if (!name || name.length < 2) {
+            e.preventDefault();
+            alert('Please enter your full name');
+            document.getElementById('name').focus();
+            return false;
+        }
+
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            e.preventDefault();
+            alert('Please enter a valid email address');
+            document.getElementById('email').focus();
+            return false;
+        }
+
+        // Validate phone for M-Pesa
+        if (methodType === 'mpesa') {
+            const phone = phoneInput.value.trim();
+            if (!phone) {
+                e.preventDefault();
+                alert('Please enter your M-Pesa phone number');
+                phoneInput.focus();
+                return false;
+            }
+
+            // Clean and validate phone number
+            const phoneClean = phone.replace(/\s/g, '').replace(/-/g, '');
+            if (!phoneClean.match(/^254\d{9}$|^0\d{9}$/)) {
+                e.preventDefault();
+                alert('Please enter a valid Kenyan phone number (e.g., 0712345678 or 254712345678)');
+                phoneInput.focus();
+                return false;
+            }
+        }
+
+        // Add payment method to form
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = 'payment_method';
+        methodInput.value = methodType;
+        this.appendChild(methodInput);
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        // For PayPal, we need to handle differently
+        if (methodType === 'paypal') {
+            e.preventDefault();
+            alert('PayPal integration coming soon! For now, please use M-Pesa or contact us directly.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-heart"></i> Donate Now';
+            return false;
+        }
+
+        return true;
+    });
+
+    // Amount button handling
+    const amountBtns = document.querySelectorAll('.amount-btn');
+    const customAmount = document.getElementById('custom_amount');
+
+    amountBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            amountBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            customAmount.value = btn.dataset.amount;
+            // Trigger validation
+            customAmount.dispatchEvent(new Event('input'));
+        });
+    });
+
+    customAmount.addEventListener('input', () => {
+        amountBtns.forEach(btn => btn.classList.remove('active'));
+        // Validate amount
+        const amount = parseFloat(customAmount.value);
+        if (amount > 0 && !isNaN(amount)) {
+            customAmount.style.borderColor = '#28a745';
+        } else if (customAmount.value === '') {
+            customAmount.style.borderColor = '#e0e0e0';
+        } else {
+            customAmount.style.borderColor = '#e74c3c';
+        }
+    });
+
+    // Real-time validation for other fields
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+
+    nameInput.addEventListener('input', () => {
+        if (nameInput.value.trim().length >= 2) {
+            nameInput.style.borderColor = '#28a745';
+        } else if (nameInput.value === '') {
+            nameInput.style.borderColor = '#e0e0e0';
+        } else {
+            nameInput.style.borderColor = '#e74c3c';
+        }
+    });
+
+    emailInput.addEventListener('input', () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(emailInput.value)) {
+            emailInput.style.borderColor = '#28a745';
+        } else if (emailInput.value === '') {
+            emailInput.style.borderColor = '#e0e0e0';
+        } else {
+            emailInput.style.borderColor = '#e74c3c';
+        }
+    });
+
+    phoneInput.addEventListener('input', () => {
+        const phone = phoneInput.value.trim();
+        const phoneClean = phone.replace(/\s/g, '').replace(/-/g, '');
+        if (phoneClean.match(/^254\d{9}$|^0\d{9}$/)) {
+            phoneInput.style.borderColor = '#28a745';
+        } else if (phone === '') {
+            phoneInput.style.borderColor = '#e0e0e0';
+        } else {
+            phoneInput.style.borderColor = '#e74c3c';
+        }
+    });
+
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        });
+    }, 100);
+</script>
+{% endblock %}
