@@ -227,15 +227,16 @@ def utility_processor():
     return {'current_year': datetime.now().year}
 
 
-# Run the app
-if __name__ == '__main__':
-    # Create templates directory if it doesn't exist
-    os.makedirs('templates', exist_ok=True)
-
-    print("=" * 50)
-    print("🚀 Starting Hope Foundation Application")
-    print("=" * 50)
-    print("📍 http://localhost:5000")
-    print("=" * 50)
-
-    app.run(debug=True, host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    import os
+    
+    # Get port from environment variable or use 5000
+    port = int(os.environ.get("PORT", 5000))
+    
+    # Use Gunicorn in production, Flask dev server in development
+    if os.environ.get("RENDER"):
+        # Running on Render
+        app.run(host="0.0.0.0", port=port)
+    else:
+        # Local development
+        app.run(debug=True, host="0.0.0.0", port=port)
