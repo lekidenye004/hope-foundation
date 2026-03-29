@@ -25,4 +25,4 @@ class Config:
     MPESA_PASSKEY = os.environ.get('MPESA_PASSKEY', 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919')
     MPESA_CALLBACK_URL = os.environ.get('MPESA_CALLBACK_URL', 'http://localhost:5000/mpesa-callback')
 
-    print(f"🔌 Connecting to database: {MYSQL_DATABASE} at {MYSQL_HOST}")
+print(f"🔌 Environment: {os.environ.get('RENDER', 'local')}")
