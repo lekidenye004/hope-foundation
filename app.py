@@ -206,7 +206,7 @@ def about():
 
 @app.route('/programs')
 def programs():
-    return render_template('programs.html', active_page='programs')
+    return render_template('program.html', active_page='programs')
 
 
 @app.route('/get-involved', methods=['GET', 'POST'])
@@ -238,7 +238,7 @@ def get_involved():
             flash('An error occurred. Please try again.', 'error')
         return redirect(url_for('get_involved'))
 
-    return render_template('get-involved.html', active_page='get-involved')
+    return render_template('involved.html', active_page='get-involved')
 
 
 @app.route('/contact', methods=['GET', 'POST'])
